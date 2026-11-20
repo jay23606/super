@@ -2,6 +2,7 @@
 # Summary
 
 - [Introduction](intro.md)
+- [The Algebraic Data Model](adm.md)
 - [Getting Started](getting-started/intro.md)
     - [TL;DR](getting-started/tldr.md)
     - [Installation](getting-started/install.md)
@@ -233,3 +234,5 @@
             - [Type System](dev/integrations/zeek/types.md)
             - [TSV Logs](dev/integrations/zeek/logs.md)
             - [JSON Logs](dev/integrations/zeek/shaping.md)
+- [Blog](blog/intro.md)
+    - [JSON Can't Tell a Map from a Record](blog/json-map-or-record.md)
