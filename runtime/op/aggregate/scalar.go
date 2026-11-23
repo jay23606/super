@@ -82,11 +82,17 @@ func (s *scalarAggregate) consume(vecs ...vector.Any) vector.Any {
 			f.ConsumeAsPartial(s.zeros, vec)
 			continue
 		}
+		groups := s.zeros
+		if s.aggs[i].Where != nil {
+			if groups, vec = dropFiltered(groups, vec); vec == nil {
+				continue
+			}
+		}
 		if all, ok := f.(expr.ScalarAggFunc); ok && n > 0 {
 			all.ConsumeAll(vec)
 			continue
 		}
-		f.Consume(s.zeros, vec)
+		f.Consume(groups, vec)
 	}
 	return vector.NewNull(vecs[0].Len())
 }

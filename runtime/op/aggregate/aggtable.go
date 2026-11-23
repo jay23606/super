@@ -14,6 +14,7 @@ type aggTable interface {
 }
 
 type superTable struct {
+	aggs        []*expr.Aggregator
 	builder     *vector.RecordBuilder
 	partialsIn  bool
 	partialsOut bool
@@ -30,6 +31,7 @@ func newSuperTable(a *Aggregate, keyTypes []super.Type) *superTable {
 		funcs = append(funcs, agg.Pattern())
 	}
 	return &superTable{
+		aggs:        a.aggs,
 		builder:     a.builder,
 		partialsIn:  a.partialsIn,
 		partialsOut: a.partialsOut,
@@ -49,10 +51,60 @@ func (s *superTable) update(keys []vector.Any, args []vector.Any) {
 	for i, arg := range args {
 		if s.partialsIn {
 			s.funcs[i].ConsumeAsPartial(keyIDs, arg)
-		} else {
-			s.funcs[i].Consume(keyIDs, arg)
+			continue
+		}
+		groups := keyIDs
+		if s.aggs[i].Where != nil {
+			if groups, arg = dropFiltered(groups, arg); arg == nil {
+				continue
+			}
+		}
+		s.funcs[i].Consume(groups, arg)
+	}
+}
+
+// dropFiltered returns groups and vec without the slots dropped by a filter
+// clause, which expr.Aggregator fills with plain nones, or a nil vec if every
+// slot was dropped.
+func dropFiltered(groups []uint32, vec vector.Any) ([]uint32, vector.Any) {
+	d, ok := vec.(*vector.Dynamic)
+	if !ok {
+		if vec.Type() == super.TypeNone {
+			return nil, nil
+		}
+		return groups, vec
+	}
+	isNone := make([]bool, len(d.Values))
+	var rest []vector.Any
+	for tag, val := range d.Values {
+		isNone[tag] = val.Type() == super.TypeNone
+		if !isNone[tag] {
+			rest = append(rest, val)
 		}
 	}
+	if len(rest) == 0 {
+		return nil, nil
+	}
+	if len(rest) == len(d.Values) {
+		return groups, vec
+	}
+	kept := make([]uint32, 0, len(d.Tags))
+	for slot, tag := range d.Tags {
+		if !isNone[tag] {
+			kept = append(kept, groups[slot])
+		}
+	}
+	if len(rest) == 1 {
+		// The values of the only other tag are the kept slots in order.
+		return kept, rest[0]
+	}
+	index := make([]uint32, 0, len(kept))
+	for slot, tag := range d.Tags {
+		if !isNone[tag] {
+			index = append(index, uint32(slot))
+		}
+	}
+	return kept, vector.Pick(d, index)
 }
 
 func (s *superTable) materialize() vector.Any {

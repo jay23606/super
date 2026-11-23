@@ -1,0 +1,91 @@
+# Rows dropped by a filter clause aren't input to the aggregate function,
+# including when the first row is dropped.
+spq: aggregate a:=any(v) filter (y==2041), d:=dcount(v) filter (y==2041), f:=fuse(this) filter (y==2041), s:=superfuse(this) filter (y==2041)
+
+input: |
+  {y:2021,v:1}
+  {y:2041,v:2}
+  {y:2041,v:2}
+
+output: |
+  {a:2,d:1,f:<{y:int64,v:int64}>,s:<{y:int64,v:int64}>}
+
+---
+
+# Same with a grouping key, including a group whose rows are all dropped.
+spq: aggregate a:=any(v) filter (y==2041), d:=dcount(v) filter (y==2041), f:=fuse(v) filter (y==2041) by k | sort k
+
+input: |
+  {k:1,y:2021,v:1}
+  {k:1,y:2041,v:2}
+  {k:2,y:2041,v:3}
+  {k:2,y:2021,v:4}
+  {k:3,y:2021,v:5}
+
+output: |
+  {k:1,a:2,d:1,f:<int64>}
+  {k:2,a:3,d:1,f:<int64>}
+  {k:3,a:null,d:0,f:null}
+
+---
+
+# Same when the values have mixed types.
+spq: |
+  values {k:1,y:2021,v:1},{k:2,y:2041,v:"a"},{k:1,y:2041,v:[1]},{k:2,y:2021,v:"b"},{k:1,y:2041,v:"c"}
+  | aggregate a:=any(v) filter (y==2041), d:=dcount(v) filter (y==2041), f:=fuse(v) filter (y==2041) by k
+  | sort k
+
+output: |
+  {k:1,a:[1],d:2,f:<string|[int64]>}
+  {k:2,a:"a",d:1,f:<string>}
+
+---
+
+# A none of a named type is a value, so it isn't dropped.
+spq: |
+  type n=none
+  values {y:2021,v:1},{y:2041,v:none::n},{y:2041,v:3}
+  | aggregate d:=dcount(v) filter (y==2041), f:=fuse(v) filter (y==2041)
+
+output: |
+  type n=none
+  {d:2,f:<n|int64>}
+
+---
+
+# With every row dropped, the results are those for no input.
+spq: aggregate a:=any(v) filter (y==9999), d:=dcount(v) filter (y==9999), f:=fuse(v) filter (y==9999)
+
+input: |
+  {y:2021,v:1}
+  {y:2041,v:2}
+
+output: |
+  {a:null,d:0,f:null}
+
+---
+
+# Scanning a file splits the aggregation into partials, and SQL's FILTER
+# clause drops rows the same way.
+script: |
+  super -s -c 'from in.sup | aggregate a:=any(v) filter (y==2041), d:=dcount(v) filter (y==2041), f:=fuse(v) filter (y==2041) by k | sort k'
+  echo ===
+  super -s -c "SELECT any(v) FILTER (WHERE y=2041) AS a, dcount(v) FILTER (WHERE y=2041) AS d, fuse(v) FILTER (WHERE y=2041) AS f FROM 'in.sup' WHERE k<3"
+
+inputs:
+  - name: in.sup
+    data: |
+      {k:1,y:2021,v:1}
+      {k:1,y:2041,v:2}
+      {k:2,y:2041,v:2}
+      {k:2,y:2021,v:4}
+      {k:3,y:2021,v:5}
+
+outputs:
+  - name: stdout
+    data: |
+      {k:1,a:2,d:1,f:<int64>}
+      {k:2,a:2,d:1,f:<int64>}
+      {k:3,a:null,d:0,f:null}
+      ===
+      {a:2,d:1,f:<int64>}
