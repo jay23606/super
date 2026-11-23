@@ -7,7 +7,9 @@ flexible compared to existing data models.
 Rather than replace the relational model (RM) or the document model
 with an altogether different approach, SuperDB unifies them into a new data model
 called the [Algebraic Data Model (ADM)](adm.md).  In this approach,
-the RM and the document model are merely special cases of a generalized ADM.
+the RM and the document model are merely special cases of a generalized ADM:
+a relational schema is a product type, JSON is one particular sum type,
+and the ADM has both.
 
 SuperDB's query language [SuperSQL<span class="tm">®</span>](super-sql/intro.md)
 is (aspirationally) backward compatible with SQL while providing a better approach for type-safe
@@ -63,8 +65,9 @@ for SuperDB include:
 * **observability and security**, where logs and events of many shapes
   are searched and analyzed side by side, and
 * **typed data interchange**, where a program's algebraic data types,
-  like structs, enums, and unions, are serialized and read back as the
-  same types.
+  like the structs, enums, and unions of Rust and TypeScript, are
+  [serialized, stored, queried, and read back](adm.md#from-application-types-to-the-database-and-back)
+  as the same types.
 
 ## The Best of Both Worlds
 
