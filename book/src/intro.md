@@ -139,9 +139,9 @@ translating between SUP and BSUP.
 ## The Super Table Format
 
 The ADM carries all the way down to storage.  SuperDB stores each database
-table in a cloud-optimized table format called SuperTable, made of
+table in a cloud-optimized table format called [SuperTable](database/format.md#supertable), made of
 immutable BSUP objects, and keeps track of a database's tables in a catalog
-format called SuperCatalog.  A SuperTable can be a schema-constrained
+format called [SuperCatalog](database/format.md#supercatalog).  A SuperTable can be a schema-constrained
 relational table, a super table whose values all conform to an algebraic type
 like a union of record types, or a table with no type at all, and like Git,
 every table has branches, atomic commits, and time travel.

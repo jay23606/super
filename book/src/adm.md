@@ -1,13 +1,22 @@
 # The Algebraic Data Model
 
-There is a popular view that nothing is fundamentally wrong with the
-relational model (RM) and that SQL just needs better syntax.
-[Pipe SQL](https://research.google/pubs/sql-has-problems-we-can-fix-them-pipe-syntax-in-sql/),
-[PRQL](https://prql-lang.org/), and others make SQL easier to write,
-but they keep the RM's type system, and with it, the RM's trouble with
-data that doesn't fit in a table.
+There's widespread consensus in the database community that the relational
+model (RM) is sound.  In
+["What Goes Around Comes Around... And Around..."](https://db.cs.cmu.edu/papers/2024/whatgoesaround-sigmodrec2024.pdf), Pavlo and Stonebraker argue
+that any attempt to replace it will fail, because whatever good
+ideas such efforts produce will simply be absorbed into SQL and the RM.
+Prof. Pavlo in fact teaches his students that
+"in the same way ... one plus one is two ..., the relational model is the true
+way, the correct way ... to represent data"
+([lecture](https://www.youtube.com/watch?t=4466&v=APqWIjtzNGE)).
+If only the [anachronisms of SQL](https://www.scattered-thoughts.net/writing/against-sql/)
+could be fixed, e.g., with
+[Pipe SQL](https://research.google/pubs/sql-has-problems-we-can-fix-them-pipe-syntax-in-sql/)
+or [PRQL](https://prql-lang.org/), then everything would be perfect.
 
-SuperDB takes a different view.  The relational _operators_ are great:
+We don't agree, and SuperDB takes a very different view.
+Better syntax keeps the RM's type system, and with it, the RM's trouble with
+data that doesn't fit in a table.  The relational _operators_ are great:
 selection, projection, joins, aggregation, normalized tables, and primary keys
 have stood the test of time.  The problem is that they are bound to tables,
 which are rooted in mathematical relations, i.e., sets of tuples that all
@@ -282,10 +291,6 @@ be replaced outright. In contrast, the authors of
 should be merely improved upon by creating a superset of SQL.
 Except for compositional syntax, the paper says SQL is
 perfectly reasonable and we should live with its anachronisms (see Section 2.4).
-And [a recent paper](https://db.cs.cmu.edu/papers/2024/whatgoesaround-sigmodrec2024.pdf)
-from legendary database experts argues that any attempt to supplant SQL or the
-RM is doomed to fail because any good ideas that arise from such efforts will
-simply be incorporated into SQL and the RM.
 
 But better syntax doesn't fix the type system, and bolting JSON or variant
 types onto the RM adds a second type system with its own operators rather than
