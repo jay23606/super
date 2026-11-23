@@ -32,9 +32,9 @@ languages: _product types_ like records, where a value has this field _and_
 that one, and _sum types_, also known as unions or tagged unions, where a value
 is this _or_ that, along with arrays, sets, and maps.
 
-The argument of this section is that the two data models in wide use today
+The argument here is that the two data models in wide use today
 each took one half of this picture.  A relational schema is a product type,
-with no sums.  JSON is a single sum type, with no products.  A type system
+with no sums.  JSON is a specific sum type, with no products.  A type system
 that has both and composes them freely contains each as a special case.
 And because it is the same type system that languages like Rust and TypeScript
 already use, data can keep its types all the way from an application to
