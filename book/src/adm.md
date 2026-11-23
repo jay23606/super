@@ -11,8 +11,10 @@ way, the correct way ... to represent data"
 ([lecture](https://www.youtube.com/watch?t=4466&v=APqWIjtzNGE)).
 If only the [anachronisms of SQL](https://www.scattered-thoughts.net/writing/against-sql/)
 could be fixed, e.g., with
-[Pipe SQL](https://research.google/pubs/sql-has-problems-we-can-fix-them-pipe-syntax-in-sql/)
-or [PRQL](https://prql-lang.org/), then everything would be perfect.
+[Pipe SQL](https://research.google/pubs/sql-has-problems-we-can-fix-them-pipe-syntax-in-sql/),
+[PRQL](https://prql-lang.org/), or
+[SaneQL](https://www.cidrdb.org/cidr2024/papers/p48-neumann.pdf),
+then everything would be perfect.
 
 We don't agree, and SuperDB takes a very different view.
 Better syntax keeps the RM's type system, and with it, the RM's trouble with

@@ -2,7 +2,7 @@
 
 SuperDB<span class="tm">®</span> is an analytics database that provides
 a universal model for managing data that is easier, more precise, and more
-flexible compared to existing data models.
+flexible than existing data models.
 
 Rather than replace the relational model (RM) or the document model
 with an altogether different approach, SuperDB unifies them into a new data model
@@ -53,9 +53,7 @@ two command styles together with static typing of dynamic data.
 
 In addition to the standard uses of the relational model, use cases
 for SuperDB include:
-* **AI agents**, which query data through SuperDB's
-  [MCP server](command/db.md#super-db-mcp) and see the precise types
-  of the data they work with, so type errors guide them to correct queries,
+* **AI agents**, where type errors guide an agent to a correct query,
 * **exploratory data analysis** of unfamiliar JSON, CSV, or Parquet with
   no schema required up front (try out [SuperLens](https://lens.superdb.org)),
 * **type-safe ETL**, where pipelines are type checked so upstream schema
@@ -89,7 +87,7 @@ JSON across queries.
 
 Unlike SQL, the output of an operator is not constrained to be a table.
 Instead the ADM provides a query model based on heterogeneously-typed sequences
-of values, sometimes ordered sometimes unordered.
+of values, sometimes ordered and sometimes unordered.
 And since a special case of a heterogeneously-typed sequence of values is a table,
 the ADM is fully compatible with the RM.
 
@@ -100,14 +98,15 @@ rather than as an anomaly that must be eliminated before work can begin.
 In fact, SuperDB tables can be created without a schema at all or
 created as [super tables](super-sql/statements/create-super-table.md).
 
-To ease adoption, SuperSQL
-is (aspirationally) backward compatible with [PostgreSQL](https://www.postgresql.org/)
-and is extended with type concepts and operators that take advantage of the ADM.
+To ease adoption, SuperSQL's SQL compatibility targets
+[PostgreSQL](https://www.postgresql.org/), which it extends with type concepts
+and operators that take advantage of the ADM.
 
-Underneath the covers, SuperSQL makes extensive use of a novel data type called a
+Under the covers, SuperSQL makes extensive use of a novel data type called a
 [fusion type](super-sql/types/fusion.md).  Using [type fusion](super-sql/type-fusion.md),
-non-algebraic data like JSON is converted to its equivalent algebraic form and
-fusion values provide a means to recover the original type of any fused value.
+the varying types of messy data like JSON are combined into a single algebraic
+type, and fusion values provide a means to recover the original type of any
+fused value.
 
 Fusion types are invaluable to the ADM because they provide:
 * a means to statically type check arbitrary data no matter how messy or incoherent it is, and
@@ -136,8 +135,8 @@ as well as columnar form (a bit like Arrow or Parquet).
 By default, SuperDB utilizes the columnar form of BSUP and one usually does not
 need to worry about these details.
 
-But unlike JSON and Parquet, there is never any loss of data fidelity when
-translating between SUP and BSUP.
+And unlike translating between JSON and Parquet, there is never any loss of
+data fidelity when translating between SUP and BSUP.
 
 ## The Super Table Format
 
@@ -152,8 +151,7 @@ every table has branches, atomic commits, and time travel.
 A [database](database/intro.md) lives entirely at a storage path in cloud
 storage or on a local file system, with no separate metastore or service to
 set up.  The same `super` command queries it directly, serves it over an HTTP
-[API](database/api.md) or as an
-[MCP server](command/db.md#super-db-mcp) for AI agents, and acts as
+[API](database/api.md) or to AI agents over MCP, and acts as
 a client of that service.
 
 So from the query language to the wire format to the table format, data keeps
@@ -161,8 +159,6 @@ its types end to end.  That's what lets SuperDB type-check queries
 over messy data that no schema anticipated.
 
 ## Try It
-
-SuperDB is easy to try out.
 
 Because SuperDB has no dependencies, it's easy to get going &mdash;
 just [install the super command](getting-started/install.md) and try it out
