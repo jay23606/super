@@ -5,7 +5,7 @@
  difference is the key to a unified model.**
 
 >[!NOTE]
-> **TL;DR** The super-structured data model defines a new and easy way to manage, store,
+> **TL;DR** The super data model defines a new and easy way to manage, store,
 > and process data utilizing an collections of strongly yet heterogeneously
 typed values.
 > The [data model specification](../formats/model.md) defines the type system

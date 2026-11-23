@@ -17,7 +17,7 @@ SuperDB's super-structured type system, the same format can represent
 all of these different approaches to data, whether a table has columns,
 a type of any kind, or [no type at all](intro.md#tables).
 
-All data and metadata in a database conforms to the super-structured data model, which materially
+All data and metadata in a database conforms to the super data model, which materially
 simplifies development, test, introspection, and so forth.
 
 The format has two parts:

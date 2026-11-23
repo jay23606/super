@@ -40,6 +40,10 @@ And because it is the same type system that languages like Rust and TypeScript
 already use, data can keep its types all the way from an application to
 the database and back.
 
+The ADM is a general idea, like the relational model or the document model.
+SuperDB's implementation of it is the [super data model](formats/model.md),
+and the examples in this section use its types and the syntax of SuperSQL.
+
 When the relational operators are applied to algebraic types, they also become
 simpler and more natural to use, as shown below.
 
@@ -82,7 +86,7 @@ is exactly one such type.  For example,
 ```sql
 CREATE TABLE paint (id BIGINT NOT NULL, color VARCHAR NOT NULL)
 ```
-declares the product type that the ADM writes as the record type
+declares the product type that the super data model writes as the record type
 `{id:int64,color:string}`, and every row must be a value of it.
 
 >[!NOTE]
@@ -95,7 +99,7 @@ declares the product type that the ADM writes as the record type
 > But sum types were notably absent.
 
 The one sum the RM does have is nullability: a nullable column holds a value
-of its type _or_ `NULL`, i.e., `string|null` in the ADM.  Modern SQL systems
+of its type _or_ `NULL`, i.e., `string|null` in the super data model.  Modern SQL systems
 have also added nested column types, and a few even have a union column type,
 but a relation is still a single product type: every row of a table, and of
 every query result, has the same columns.
@@ -121,7 +125,7 @@ doesn't apply to this kind of shape," which SQL can't tell apart from
 The document model starts from the other end.  A JSON value is a number _or_
 a string _or_ a boolean _or_ null _or_ an array of JSON values _or_ an object
 whose keys map to JSON values.  That is a sum type and, since JSON values
-nest, a recursive one.  The ADM can state it directly:
+nest, a recursive one.  SuperSQL can state it directly:
 ```mdtest-input json.spq
 type JSON =
   float64 | int64 | bool | string | null
@@ -199,7 +203,7 @@ This is what it means for the ADM to subsume the two models.  Neither is
 emulated.  A relational schema and the JSON type are both just types that
 can be written down, and the relational operators work on all of them.
 
-## Shapes in the ADM
+## Shapes in SuperDB
 
 With algebraic types, the shapes need no workaround, and nobody has to
 declare the types above to get started.  When SuperDB reads the JSON, each
@@ -420,9 +424,9 @@ The types exist at both ends and nowhere in between, and every hop is a
 place where the two ends can drift apart.
 
 With the ADM, there is nothing to erase because each of these types has a
-direct counterpart:
+direct counterpart, shown here for the super data model:
 
-| Rust | TypeScript | ADM |
+| Rust | TypeScript | Super data model |
 |---|---|---|
 | `struct` | object type | [record](super-sql/types/record.md) |
 | `enum` with data | discriminated union | [union](super-sql/types/union.md) of [named types](super-sql/types/named.md) |

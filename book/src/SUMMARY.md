@@ -215,7 +215,7 @@
 !!    - [Performance](tutorials/performance.md)
 !!    - [For jq Users](tutorials/jq.md)
 - [Formats](formats/intro.md)
-    - [Data Model](formats/model.md)
+    - [Super Data Model](formats/model.md)
     - [Super (SUP)](formats/sup.md)
     - [Super Binary (BSUP)](formats/bsup.md)
 - [Database](database/intro.md)
