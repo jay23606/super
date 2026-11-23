@@ -1,15 +1,16 @@
 # The Algebraic Data Model
 
-There's widespread consensus in the database community that the relational
-model (RM) is sound.  In
-["What Goes Around Comes Around... And Around..."](https://db.cs.cmu.edu/papers/2024/whatgoesaround-sigmodrec2024.pdf), Pavlo and Stonebraker argue
-that any attempt to replace it will fail, because whatever good
-ideas such efforts produce will simply be absorbed into SQL and the RM.
-Prof. Pavlo in fact teaches his students that
-"in the same way ... one plus one is two ..., the relational model is the true
-way, the correct way ... to represent data"
-([lecture](https://www.youtube.com/watch?t=4466&v=APqWIjtzNGE)).
-If only the [anachronisms of SQL](https://www.scattered-thoughts.net/writing/against-sql/)
+> "In the same way ... one plus one is two ..., the relational model is the
+> true way, the correct way ... to represent data"
+>
+> &mdash; Andy Pavlo, [CMU database lecture](https://www.youtube.com/watch?t=4466&v=APqWIjtzNGE)
+
+This is what Prof. Pavlo teaches his students, and most of the database
+community would agree with him.  In
+["What Goes Around Comes Around... And Around..."](https://db.cs.cmu.edu/papers/2024/whatgoesaround-sigmodrec2024.pdf),
+Pavlo and Stonebraker argue that any attempt to replace the relational model
+(RM) will fail, because whatever good ideas such efforts produce will simply
+be absorbed into SQL and the RM.  If only the [anachronisms of SQL](https://www.scattered-thoughts.net/writing/against-sql/)
 could be fixed, e.g., with
 [Pipe SQL](https://research.google/pubs/sql-has-problems-we-can-fix-them-pipe-syntax-in-sql/),
 [PRQL](https://prql-lang.org/), or
@@ -17,8 +18,9 @@ could be fixed, e.g., with
 then everything would be perfect.
 
 We don't agree, and SuperDB takes a very different view.
-Better syntax keeps the RM's type system, and with it, the RM's trouble with
-data that doesn't fit in a table.  The relational _operators_ are great:
+While improvements to SQL's syntax certainly wouldn't hurt, they leave the
+RM's type system untouched, and the type system is why the RM has trouble
+with data that doesn't fit in a table.  The relational _operators_ are great:
 selection, projection, joins, aggregation, normalized tables, and primary keys
 have stood the test of time.  The problem is that they are bound to tables,
 which are rooted in mathematical relations, i.e., sets of tuples that all
