@@ -236,4 +236,5 @@
             - [JSON Logs](dev/integrations/zeek/shaping.md)
 - [Blog](blog/intro.md)
     - [Welcome to SuperDB](blog/welcome.md)
+    - [Deeply Nested JSON, One Type at a Time](blog/gharchive.md)
     - [JSON Can't Tell a Map from a Record](blog/json-map-or-record.md)
